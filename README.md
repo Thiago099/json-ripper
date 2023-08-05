@@ -47,6 +47,8 @@ const query = [
 
 ```js
 const result = jsonRipper(obj, query)
+
+console.log(result)
 ```
 
 That will result on this output:
