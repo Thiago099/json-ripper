@@ -104,6 +104,6 @@ The pattern consists of
 
 ```
 "any text": a key to be matched in a object
-"*": a array to be matched in the json
+"*": a array to be matched in the object
 ":": optional paramter, at the end, that is a alias for the column
 ```
