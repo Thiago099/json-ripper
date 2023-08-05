@@ -46,7 +46,7 @@ const query = [
 ```
 
 ```js
-const result = jsonRipper(obj, pattern)
+const result = jsonRipper(obj, query)
 ```
 
 That will result on this output:
