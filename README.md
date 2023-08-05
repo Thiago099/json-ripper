@@ -103,5 +103,7 @@ The query parameter is an array of patterns, that all must be fulfilled to the o
 The pattern consists of
 
 "any text": a key to be matched in a object
+
 "*": a array to be matched in the json
+
 ":": optional paramter, at the end, that is a alias for the column
