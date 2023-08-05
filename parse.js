@@ -1,4 +1,4 @@
-export { parse }
+export default parse
 
 function parse(obj, pattern)
 {
