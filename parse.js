@@ -1,16 +1,115 @@
-export default parse
+export  {rip, combine}
 
-function parse(obj, pattern)
+function rip(obj, pattern)
 {
-    let patterns = pattern.map(item => parsePath(item, obj))
+    let syntax = pattern.map(item => parseSyntax(item))
+    let patterns = syntax.map(item => parsePath(item, obj))
 
-    const matches = patterns.map(x => x.matches).flat()
-    const requiredNames = patterns.filter(x=>!x.pattern.optional).map(x=>x.pattern.name)
-    
+    const matches = patterns.flat()
+    const requiredNames = syntax.filter(x=>!x.optional).map(x=>x.name)
+
     return combinePathsIntoObject(requiredNames, matches)
+
+}
+function combine(items, pattern)
+{
+    let obj = []
+    let syntax = pattern.map(item => parseSyntax(item))
+    mapItemToPath(obj, syntax, items)
+    return obj
 }
 
-function parsePath(item, obj)
+function mapItemToPath(obj, syntaxes, items)
+{
+    for(const item of items)
+    {
+        let old;
+        for(const syntax of syntaxes)
+        {
+            old = insert(old, syntax.path, item[syntax.name])
+        }
+        obj.push(old)
+    }
+}
+
+function insert(old, path, value)
+{
+    let result;
+    if(old)
+    {
+        result = old
+    }
+    else
+    {
+        if(path[0] == "*")
+        {
+            result = []
+        }
+        else
+        {
+            result = {}
+        }
+    }
+    loop(result, 1)
+    return result
+    function loop(pointer, i)
+    {
+        if(i == path.length)
+        {
+            if(path[i-1] == "*")
+            {
+                pointer.push(value)
+            }
+            else
+            {
+                pointer[path[i-1]] = value
+            }
+            return
+        }
+
+        if(path[i-1] == "*")
+        {
+            if(path[i] == "*")
+            {
+                if(!pointer[0])
+                {
+                    pointer.push([])
+                }
+                loop(pointer[0], i+1)
+            }
+            else
+            {
+                if(!pointer[0])
+                {
+                    pointer.push({})
+                }
+                loop(pointer[0], i+1)
+            }
+        }
+        else
+        {
+            if(path[i] == "*")
+            {
+                if(!pointer[path[i-1]])
+                {
+                    pointer[path[i-1]] = []
+                }
+                loop(pointer[path[i-1]], i+1)
+            }
+            else
+            {
+                if(!pointer[path[i-1]])
+                {
+                    pointer[path[i-1]] = {}
+                }
+                loop(pointer[path[i-1]], i+1)
+            }
+        }
+    }
+}
+
+
+function parseSyntax(item)
 {
     let separatedAlias = item.split(':');
     let path = separatedAlias[0]
@@ -22,11 +121,14 @@ function parsePath(item, obj)
     }
     path = path.split('/')
     let name = separatedAlias.length == 2 ? separatedAlias[1] : getDefaultName(path);
-
+    return {path, name, optional}
+}
+function parsePath({path, name}, obj)
+{
 
     const matches = [];
     loop([], 0, obj);
-    return {matches, pattern:{name, optional}};
+    return matches;
     function loop(keys,i,obj)
     {
 
@@ -40,8 +142,7 @@ function parsePath(item, obj)
             matches.push({
                 data: obj,
                 path: keys,
-                name,
-                optional
+                name
             });
             return;
         }

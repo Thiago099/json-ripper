@@ -8,7 +8,7 @@ npm i json-ripper
 ```
 then import it like this
 ```js
-import jsonRipper from "json-ripper"
+import * as jsonRipper from "json-ripper"
 ```
 
 Lets say you have a javascript object:
@@ -46,7 +46,7 @@ const query = [
 ```
 
 ```js
-const result = jsonRipper(obj, query)
+const result = jsonRipper.rip(obj, query)
 
 console.log(result)
 ```
