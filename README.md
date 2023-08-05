@@ -51,13 +51,6 @@ const result = jsonRipper.rip(obj, query)
 console.log(result)
 ```
 
-you can recover your original data by calling the combine function
-```js
-const original = jsonRipper.combine(result, query)
-
-console.log(original)
-```
-
 That will result on this output:
 
 ```json
@@ -73,6 +66,17 @@ That will result on this output:
         "Age": 25
     }
 ]
+```
+
+you can recover your original data by calling the combine function
+```js
+const original = jsonRipper.combine(result, query)
+
+console.log(original)
+```
+
+```js
+the result is your original object
 ```
 
 Here is another example of a query you can do:
