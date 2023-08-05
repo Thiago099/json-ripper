@@ -100,7 +100,7 @@ The structure is pretty simple.
 
 The jsonRipper method receives two parameters, an object and a query.
 
-The query parameter is an array of patterns, that all must be fulfilled to the object be added in the result.
+The query parameter is an array of patterns, that all non optional must be fulfilled to the object be added in the result.
 
 The pattern consists of
 
@@ -108,4 +108,5 @@ The pattern consists of
 "any text": a key to be matched in a object
 "*": a array to be matched in the object
 ":": optional paramter, at the end, that is a alias for the column
+"?": if the fist character is a interrogation, the match is optional
 ```

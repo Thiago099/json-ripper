@@ -2,20 +2,31 @@ export default parse
 
 function parse(obj, pattern)
 {
-    let items = pattern.map(item => parsePath(item, obj)).flat()
-    return combinePathsIntoObject(items, pattern)
+    let patterns = pattern.map(item => parsePath(item, obj))
+
+    const matches = patterns.map(x => x.matches).flat()
+    const requiredNames = patterns.filter(x=>!x.pattern.optional).map(x=>x.pattern.name)
+    
+    return combinePathsIntoObject(requiredNames, matches)
 }
 
 function parsePath(item, obj)
 {
     let separatedAlias = item.split(':');
-    let path = separatedAlias[0].split('/');
+    let path = separatedAlias[0]
+    let optional = false
+    if(path[0] == "?")
+    {
+        path = path.substring(1)
+        optional = true
+    }
+    path = path.split('/')
     let name = separatedAlias.length == 2 ? separatedAlias[1] : getDefaultName(path);
 
 
-    const result = [];
+    const matches = [];
     loop([], 0, obj);
-    return result;
+    return {matches, pattern:{name, optional}};
     function loop(keys,i,obj)
     {
 
@@ -26,10 +37,11 @@ function parsePath(item, obj)
         
         if (i == path.length)
         {
-            result.push({
+            matches.push({
                 data: obj,
                 path: keys,
-                name
+                name,
+                optional
             });
             return;
         }
@@ -61,10 +73,10 @@ function getDefaultName(path)
     return path[i]
 }
 
-function combinePathsIntoObject(columns, query)
+function combinePathsIntoObject(requiredNames, matches)
 {
     let result = [];
-    loop({}, columns, 0);
+    loop({}, matches, 0);
     function loop(obj, items, i)
     {
         let groups = Group(items, i);
@@ -78,16 +90,16 @@ function combinePathsIntoObject(columns, query)
                 if (item.path.length == i + 1)
                 {
                     obj[item.name] = item.data;
-                    if(Object.keys(obj).length == query.length)
-                    {
-                        result.push({...obj});
-                    }
                 }
                 else
                 {
                     current.push(item);
                 }
             }
+        }
+        if(requiredNames.every(x=>Object.keys(obj).includes(x)))
+        {
+            result.push({...obj});
         }
         for(let group of addList)
         {
