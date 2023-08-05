@@ -10,7 +10,7 @@ function parsePath(item, obj)
 {
     let separatedAlias = item.split(':');
     let path = separatedAlias[0].split('/');
-    let name = separatedAlias.length == 2 ? separatedAlias[1] : path.at(-1);
+    let name = separatedAlias.length == 2 ? separatedAlias[1] : getDefaultName(path);
 
 
     const result = [];
@@ -49,6 +49,16 @@ function parsePath(item, obj)
             loop([...keys, path[i]], i + 1, obj[path[i]]);
         }
     }
+}
+
+function getDefaultName(path)
+{
+    var i = path.length - 1
+    while(path[i] == "*" && i > 0)
+    {
+        i--
+    }
+    return path[i]
 }
 
 function combinePathsIntoObject(columns, query)
