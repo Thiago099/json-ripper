@@ -14,7 +14,7 @@ function rip(obj, pattern)
 
     const result = combinePathsIntoObject(matches)
 
-    return removeInvalidObjects(result,requiredNames);
+    return removeInvalidObjects(result,requiredNames)
 
 }
 
