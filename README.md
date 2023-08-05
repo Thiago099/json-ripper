@@ -8,7 +8,7 @@ npm i json-ripper
 ```
 then import it like this
 ```js
-import * as jsonRipper from "json-ripper"
+import jsonRipper from "json-ripper"
 ```
 
 Lets say you have a javascript object:
@@ -31,6 +31,13 @@ const obj = [
         "Occupations":[
             "Nurse",
         ]
+    },
+    {
+        "Id": 3,
+        "Name":"Lucy",
+        "Occupations":[
+            "Student",
+        ]
     }
 ]
 ```
@@ -41,7 +48,8 @@ You can do this query recover some data from it:
 const query = [
     "*/Id:IdUser",
     "*/Name",
-    "*/Age",
+    "?*/Age",
+    "*/Occupations/*:Occupation",
 ]
 ```
 
@@ -58,51 +66,25 @@ That will result on this output:
     {
         "IdUser": 0,
         "Name": "Jhon doe",
-        "Age": 39
-    },
-    {
-        "IdUser": 1,
-        "Name": "Mary",
-        "Age": 25
-    }
-]
-```
-
-you can recover your original data by calling the combine function
-```js
-const original = jsonRipper.combine(result, query)
-
-console.log(original)
-```
-
-```js
-the result is your original object
-```
-
-Here is another example of a query you can do:
-
-```js
-const query = [
-    "*/Id:IdUser",
-    "*/Occupations/*:Occupation",
-]
-```
-
-result:
-
-```json
-[
-    {
-        "IdUser": 0,
+        "Age": 39,
         "Occupation": "Programmer"
     },
     {
         "IdUser": 0,
+        "Name": "Jhon doe",
+        "Age": 39,
         "Occupation": "Design"
     },
     {
         "IdUser": 1,
+        "Name": "Mary",
+        "Age": 25,
         "Occupation": "Nurse"
+    },
+    {
+        "IdUser": 3,
+        "Name": "Lucy",
+        "Occupation": "Student"
     }
 ]
 ```
