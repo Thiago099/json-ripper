@@ -3,7 +3,7 @@
 This library allows you to make queries, to turn json nested data into relational data.
 
 To install it you can run
-```js
+```bash
 npm i json-ripper
 ```
 then import it like this
