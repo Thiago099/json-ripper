@@ -47,16 +47,14 @@ You can do this query recover some data from it:
 ```js
 const query = [
     "*/Id:IdUser",
-    "*/Name",
-    "?*/Age",
     "*/Occupations/*:Occupation",
 ]
 ```
 
 ```js
-const result = jsonRipper(obj, query)
+const userOccupations = jsonRipper(obj, query)
 
-console.log(result)
+console.log(userOccupations)
 ```
 
 That will result on this output:
@@ -65,26 +63,48 @@ That will result on this output:
 [
     {
         "IdUser": 0,
-        "Name": "Jhon doe",
-        "Age": 39,
         "Occupation": "Programmer"
     },
     {
         "IdUser": 0,
-        "Name": "Jhon doe",
-        "Age": 39,
         "Occupation": "Design"
     },
     {
         "IdUser": 1,
-        "Name": "Mary",
-        "Age": 25,
         "Occupation": "Nurse"
     },
     {
         "IdUser": 3,
-        "Name": "Lucy",
         "Occupation": "Student"
+    }
+]
+```
+
+here is another example
+```js
+const query = [
+    "*/Id:IdUser",
+    "*/Name",
+    "?*/Age",
+]
+const users = jsonRipper(obj, query)
+```
+
+```json
+[
+    {
+        "IdUser": 0,
+        "Name": "Jhon doe",
+        "Age": 39
+    },
+    {
+        "IdUser": 1,
+        "Name": "Mary",
+        "Age": 25
+    },
+    {
+        "IdUser": 3,
+        "Name": "Lucy"
     }
 ]
 ```
