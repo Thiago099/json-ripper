@@ -13,26 +13,26 @@ function rip(obj, pattern)
 }
 function combine(items, pattern)
 {
-    let obj = []
     let syntax = pattern.map(item => parseSyntax(item))
-    mapItemToPath(obj, syntax, items)
-    return obj
+    return  mapItemToPath(syntax, items)
 }
 
-function mapItemToPath(obj, syntaxes, items)
+function mapItemToPath(syntaxes, items)
 {
+    let result;
+    let index = 0;
     for(const item of items)
     {
-        let old;
         for(const syntax of syntaxes)
         {
-            old = insert(old, syntax.path, item[syntax.name])
+            result = insert(index, result, syntax.path, item[syntax.name])
         }
-        obj.push(old)
+        index++
     }
+    return result
 }
 
-function insert(old, path, value)
+function insert(index,old, path, value)
 {
     let result;
     if(old)
@@ -71,19 +71,19 @@ function insert(old, path, value)
         {
             if(path[i] == "*")
             {
-                if(!pointer[0])
+                if(!pointer[index])
                 {
                     pointer.push([])
                 }
-                loop(pointer[0], i+1)
+                loop(pointer[index], i+1)
             }
             else
             {
-                if(!pointer[0])
+                if(!pointer[index])
                 {
                     pointer.push({})
                 }
-                loop(pointer[0], i+1)
+                loop(pointer[index], i+1)
             }
         }
         else
