@@ -1,11 +1,11 @@
 {
   "name": "json-ripper",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "",
   "main": "parse.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "MIT"
+  "license": "GNU v3.0"
 }
