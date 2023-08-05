@@ -54,7 +54,7 @@ const query = [
 ```
 
 ```js
-const result = jsonRipper.rip(obj, query)
+const result = jsonRipper(obj, query)
 
 console.log(result)
 ```
