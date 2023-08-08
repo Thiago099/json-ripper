@@ -9,7 +9,7 @@ function rip(obj, pattern)
     let syntax = pattern.map(item => parseSyntax(item))
     let patterns = syntax.map(item => parsePath(item, obj))
 
-    const matches = patterns.flat()
+    const matches = patterns.flat().sort((a,b)=>a.path.length - b.path.length)
     const requiredNames = syntax.filter(x=>!x.optional).map(x=>x.name)
 
     const result = combinePathsIntoObject(matches)
